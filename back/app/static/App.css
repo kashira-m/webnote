@@ -1,0 +1,30 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#root {
+    width: 100%;
+    height: 100%;
+}
+
+.app-container {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.editorContainer {
+    width: 70%;
+    float: left;
+}
+
+.sidebarContainer {
+    width: 30%;
+    height: 100%;
+    float: left;
+}
