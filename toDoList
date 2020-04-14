@@ -1,0 +1,9 @@
+#server
+ -define api
+
+#front
+ -beutiful gui
+ -json request to server
+
+#database
+

@@ -12,7 +12,7 @@ function App() {
         <div className="app-container">
             <SidebarComponent
                 notes={note}
-                selectedNote={selectedNote}
+                selectedNote={selectedNote}                  
                 noteSetter={setselectedNote}
             ></SidebarComponent>
             <EditorComponent
