@@ -1,0 +1,7 @@
+server send[note id, note tite]-> client
+client req[note id] -> server send[note body] -> client
+client send[note id, edited note] -> server fetch[note body -> edited note]
+client send[new note title] -> server make[new note id] send[new note id] -> client
+
+
+server send [note id, note title, note body] -> client

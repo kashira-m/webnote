@@ -20,11 +20,23 @@ body {
 
 .editorContainer {
     width: 70%;
+    height: 100%;
     float: left;
+}
+
+.quill {
+    position: relative;
+    width: 80%;
+    height: 80%;
+    
 }
 
 .sidebarContainer {
     width: 30%;
     height: 100%;
     float: left;
+}
+
+.savebutton {
+    position: relative;
 }

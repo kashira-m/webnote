@@ -1,45 +1,72 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import EditorComponent from "./editor/editor"
 import SidebarComponent from "./sidebar/sidebar"
-
+import request from "superagent"
 function App() {
-
-    const [note, setNotes] = useState(getJson())
+    const [note, setNote] = useState({
+        noteid: 0,
+        title: '',
+        body: "",
+        updateAt: ""
+    })
 
     var [selectedNote, setselectedNote] = useState(1)
-    
+    //
+    useEffect(() =>
+            request
+            .get('http://localhost:5000/getnote')
+            .query(`noteid=${selectedNote}`)
+            .end((err, res) => {
+                if (err) {
+                    console.log(err)
+                    setNote('Sorry error occured')
+                }
+                else {
+                    console.log(typeof(res.body),res.body)
+                    setNote(res.body)
+                    console.log(note)
+                }
+            }), [selectedNote])
     return (
         <div className="app-container">
             <SidebarComponent
-                notes={note}
-                selectedNote={selectedNote}                  
-                noteSetter={setselectedNote}
+                selectedNote={selectedNote}
+                selectednoteSetter={setselectedNote}
             ></SidebarComponent>
             <EditorComponent
-                notes={note}
+                note={note}
+                setNote={setNote}
                 selectedNote={selectedNote}
             ></EditorComponent>
         </div>
     )
 }
 
-function getJson() {
-    var json = [
-        {
-            _id: 1,
-            title: "Hello world",
-            body: "HEHEHE",
-            updataAt: new Date(),
-        },
-        {
-            _id: 2,
-            title: "hello again",
-            body: "YEAH Hello World",
-            updateAt: new Date(),
-        },
-    ]
+function getnote(noteid) {
+    request
+        .get('http://localhost:5000/getnote')
+        .query(`noteid=${noteid}`)
+        .then(res => {
+                console.log(res.body)
+                return res.body
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}
 
-    return json
+function getTitle(userid) {
+    request
+    .get('http://localhost:5000/gettitles')
+    .query(`userid=${userid}`)
+    .then(res => {
+        console.log(res.body)
+        return res.body
+    })
+    .catch(err => {
+        console.log(err)
+        return
+    })
 }
 
 export default App

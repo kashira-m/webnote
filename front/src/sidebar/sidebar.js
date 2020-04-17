@@ -1,9 +1,13 @@
 import React, { useState } from "react"
 import Notelist from "../notelist/notelist"
+import request from "superagent"
 
 function SidebarComponent(props) {
     const [showInput, setShow] = useState(false)
-    console.log(typeof props.notes)
+    
+    const [newtitle, setNewtitle] = useState('')
+
+    const [requireReload, setrequireReload] = useState(true)
 
     return (
         <div className="sidebarContainer">
@@ -13,23 +17,42 @@ function SidebarComponent(props) {
             <div>
                 {showInput ?
                     <div>
-                        <input type="text"></input>
-                        <button onClick={(e) => makeNote(e, setShow, props.notes)}>OK</button>
+                        <input type="text" value={newtitle} onChange={(e) => setNewtitle(e.target.value)}></input>
+                        <button onClick={() => makeNote(setShow, newtitle ,setNewtitle, setrequireReload)}>OK</button>
                     </div>
                     : null}
             </div>
             <Notelist
-                notes={props.notes}
-                noteSetter={props.noteSetter}
+                selectedNote = {props.selectedNote}
+                selectednoteSetter={props.selectednoteSetter}
+                requireReload = {requireReload}
+                setrequireReload = {setrequireReload}
             ></Notelist>
         </div>
     )
 }
 
-function makeNote(e, setShow, notes) {
-    console.log("created new note clicked")
-    notes[3].title = "YEAHHH"
-    setShow(false)
+function makeNote(setShow, newtitle, setNewtitle, setrequireReload) {
+    setShow(!setShow)
+    console.log(newtitle)
+    // userid, noteid, title, body, updateAt
+    let d = new Date()
+    let datestr = d.toString()
+    request
+        .post('http://localhost:5000/makenote')
+        .send({userid:"mon", noteid: "non", title: newtitle, body: 'newNote', updateAt: datestr})
+        .then(res => {
+            console.log(res.body)
+            setrequireReload(true)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+        .then(() => {
+            setNewtitle('')
+        })
+
+    return
 }
 
 export default SidebarComponent
